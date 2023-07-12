@@ -10,21 +10,14 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
 import { AuthService } from './authentication/auth.service';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { AngularFireModule, FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { getAuth, provideAuth } from "@angular/fire/auth";
 import { environment } from 'src/environments/environment.development';
 import { AuthGuardService } from './authentication/guard/auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { getStorage, provideStorage, StorageModule } from '@angular/fire/storage';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 
-/*
-apiKey: "AIzaSyB7SGEPnROILjRHEc3FXbFT_jndZCHeZ1E",
-authDomain: "angularmemorando.firebaseapp.com",
-databaseURL: "https://angularmemorando-default-rtdb.firebaseio.com",
-projectId: "angularmemorando",
-storageBucket: "angularmemorando.appspot.com",
-messagingSenderId: "988276496590",
-appId: "1:988276496590:web:b11d2ae472455bcf53d89f"
-*/
 
 @NgModule({
   declarations: [
@@ -37,14 +30,16 @@ appId: "1:988276496590:web:b11d2ae472455bcf53d89f"
     RouterModule,
     FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireStorageModule
   ],
   providers: [
     AuthService,
-    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig },
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig},
     AuthGuardService
   ],
   bootstrap: [AppComponent]
