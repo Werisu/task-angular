@@ -57,4 +57,9 @@ export class AuthService {
   gravarUsuario(user: any) {
     sessionStorage.setItem('user', JSON.stringify(user));
   }
+
+  get userLogged() {
+    let getSession = sessionStorage.getItem('user');
+    return getSession ? JSON.parse(getSession) : null;
+  }
 }

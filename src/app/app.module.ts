@@ -14,6 +14,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { getAuth, provideAuth } from "@angular/fire/auth";
 import { environment } from 'src/environments/environment.development';
 import { AuthGuardService } from './authentication/guard/auth-guard.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /*
 apiKey: "AIzaSyB7SGEPnROILjRHEc3FXbFT_jndZCHeZ1E",
@@ -32,6 +33,7 @@ appId: "1:988276496590:web:b11d2ae472455bcf53d89f"
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     RouterModule,
     FormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
