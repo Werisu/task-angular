@@ -131,4 +131,55 @@ class="h-full bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4"
 
 <div *ngIf="authx.user">
   Logged as <b>{{ authx.user.email }}</b> | <button (click)="authx.signOut()">Sair</button>
+
+  <hr>
+
+  <h2>Lista do firebase</h2>
+  <hr>
+  <div>Nome:</div>
+  <div><input type="text" [(ngModel)]="formNewName" name="novoNome"></div>
+  <div>Age:</div>
+  <div><input type="text" [(ngModel)]="formNewAge" name="novaIdade"></div>
+  <br>
+  <button (click)="addItem()">Adicionar</button>
+  <hr>
+
+
+<div class="relative overflow-x-auto">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+              <th scope="col" class="px-6 py-3">
+                Nome
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Idade
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Email
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Comando
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let item of list | async" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th  [title]="['chave: ' + item.key]" scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {{ item.name }}
+              </th>
+              <td  [title]="['chave: ' + item.key]" class="px-6 py-4">
+                {{ item.age }}
+              </td>
+              <td  [title]="['chave: ' + item.key]" class="px-6 py-4">
+                {{ item.email }}
+              </td>
+              <td [title]="['chave: ' + item.key]" class="px-6 py-4">
+                <button (click)="deleteItem(item.key)">remover</button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
+
 </div>
