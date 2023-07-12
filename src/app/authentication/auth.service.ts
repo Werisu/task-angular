@@ -1,31 +1,42 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import {
+  Auth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   user: any;
   error: any;
 
-constructor(public auth: AngularFireAuth) { }
+  constructor(private auth: Auth) {}
 
-async emailSignIn(email: string, password: string) {
-  try {
-    const credential = await this.auth.signInWithEmailAndPassword(email, password);
-    this.user = credential.user;
-  } catch (error) {
-    this.error = error;
+  async emailSignIn(email: string, password: string) {
+    signInWithEmailAndPassword(this.auth, email, password)
+      .then((userCredential) => {
+        this.user = userCredential.user;
+      })
+      .catch((error) => {
+        this.error = error;
+      });
   }
-}
 
-async googleSignIn() {
-  try {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-  } catch (error) {
-    this.error = error;
+  async googleSignIn() {
+    signInWithPopup(this.auth, new GoogleAuthProvider())
+      .then((userCredential) => {
+        this.user = userCredential.user;
+      })
+      .catch((error) => {
+        this.error = error;
+      });
   }
-}
 
+  async signOut() {
+    await this.auth.signOut();
+    this.user = null;
+  }
 }

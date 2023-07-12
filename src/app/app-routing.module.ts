@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'painel', loadChildren: () => import('./modules/dashboad/dashboad.module').then(m => m.DashboadModule) },
-  { path: 'kanban', loadChildren: () => import('./modules/kanban/kanban.module').then(m => m.KanbanModule) },
-  { path: '', redirectTo: 'painel', pathMatch: 'full' },
+  { path: 'todoapp', loadChildren: () => import('./modules/dashboad/dashboad.module').then(m => m.DashboadModule) },
+  { path: '', loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule) },
+  { path: '**', redirectTo: 'todoapp' }
 ];
 
 @NgModule({
