@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { KanbanRoutingModule } from './kanban-routing.module';
 import { KanbanComponent } from './kanban.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { KanbanComponent } from './kanban.component';
   ],
   imports: [
     CommonModule,
-    KanbanRoutingModule
+    KanbanRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class KanbanModule { }

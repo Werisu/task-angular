@@ -1,10 +1,10 @@
 
 <div
 *ngIf="!authx.user"
-class="h-full bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4"
+class="h-screen bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4"
 >
 <div class="flex flex-col items-center justify-center">
-  <h1>Angular OnFire 🔥</h1>
+  <img class="logo w-32 drop-shadow-[0_10px_8px_rgba(255,255,255,.4)] p-0 m-0" src="assets/images/logo-taskfire-retangulo.png" alt="">
   <div *ngIf="authx.error" role="alert">
     <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
       Danger
@@ -19,18 +19,18 @@ class="h-full bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4"
         tabindex="0"
         class="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800"
       >
-        Login to your account
+        Faça login na sua conta
       </p>
       <p
         tabindex="0"
         class="focus:outline-none text-sm mt-4 font-medium leading-none text-gray-500"
       >
-        Dont have account?
+      Não tem conta?
         <a
           href="javascript:void(0)"
           class="hover:text-gray-500 focus:text-gray-500 focus:outline-none focus:underline hover:underline text-sm font-medium leading-none text-gray-800 cursor-pointer"
         >
-          Sign up here</a
+          Crie aqui</a
         >
       </p>
       <button
@@ -44,38 +44,12 @@ class="h-full bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4"
           alt="google"
         />
         <p class="text-base font-medium ml-4 text-gray-700">
-          Continue with Google
-        </p>
-      </button>
-      <button
-        aria-label="Continue with github"
-        role="button"
-        class="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-4"
-      >
-        <img
-          src="https://tuk-cdn.s3.amazonaws.com/can-uploader/sign_in-svg3.svg"
-          alt="github"
-        />
-        <p class="text-base font-medium ml-4 text-gray-700">
-          Continue with Github
-        </p>
-      </button>
-      <button
-        aria-label="Continue with twitter"
-        role="button"
-        class="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-4"
-      >
-        <img
-          src="https://tuk-cdn.s3.amazonaws.com/can-uploader/sign_in-svg4.svg"
-          alt="twitter"
-        />
-        <p class="text-base font-medium ml-4 text-gray-700">
-          Continue with Twitter
+          Google
         </p>
       </button>
       <div class="w-full flex items-center justify-between py-5">
         <hr class="w-full bg-gray-400" />
-        <p class="text-base font-medium leading-4 px-2.5 text-gray-400">OR</p>
+        <p class="text-base font-medium leading-4 px-2.5 text-gray-400">OU</p>
         <hr class="w-full bg-gray-400" />
       </div>
       <div>
@@ -98,7 +72,7 @@ class="h-full bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4"
           for="pass"
           class="text-sm font-medium leading-none text-gray-800"
         >
-          Password
+          Senha
         </label>
         <div class="relative flex items-center justify-center">
           <input
@@ -122,7 +96,7 @@ class="h-full bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4"
           role="button"
           class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full"
         >
-          Create my account
+          Entrar
         </button>
       </div>
     </div>
@@ -182,4 +156,10 @@ class="h-full bg-gradient-to-tl from-green-400 to-indigo-900 w-full py-16 px-4"
   </table>
 </div>
 
+</div>
+
+<div class="footer absolute bottom-0 flex w-full justify-center">
+  <div>
+    <small>Todos os direitos reservados © 2023</small>
+  </div>
 </div>
