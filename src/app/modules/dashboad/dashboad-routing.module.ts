@@ -8,6 +8,7 @@ const routes: Routes = [
     { path: 'home', component: PainelComponent },
     { path: 'kanban', loadChildren: () => import('../kanban/kanban.module').then(m => m.KanbanModule) },
     { path: 'perfil', loadChildren: () => import('../perfil/perfil.module').then(m => m.PerfilModule) },
+    { path: 'users', loadChildren: () => import('../users/users.module').then(m => m.UsersModule) },
     { path: '', redirectTo: 'home', pathMatch: 'full' },
   ] },
 ];
