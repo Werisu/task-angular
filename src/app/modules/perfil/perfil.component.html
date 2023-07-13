@@ -3,10 +3,9 @@
   <form [formGroup]="form" (submit)="onSubmit()">
     <div class="space-y-12">
       <div class="border-b border-gray-900/10 pb-12">
-        <h2 class="text-base font-semibold leading-7 text-gray-900">Profile</h2>
+        <h2 class="text-base font-semibold leading-7 text-gray-900">Perfil</h2>
         <p class="mt-1 text-sm leading-6 text-gray-600">
-          This information will be displayed publicly so be careful what you
-          share.
+          Aqui você pode alterar seus dados
         </p>
 
         <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -32,14 +31,20 @@
               <input type="file"
               name="photoURL"
               formControlName="photoURL"
-              (change)="uploadFile($event)"
+              (change)="chooseFile($event)"
               >
               <button
+                *ngIf="false"
                 type="button"
                 class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
               >
-                Trocar
+              Enviar
               </button>
+              <div style="width: 20%;">
+                <div *ngIf="!!uploadPercent" class="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+                  <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" [style]="'width: ' + uploadPercent+'%'"> {{uploadPercent}}%</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -389,6 +394,7 @@
 
     <div class="mt-6 flex items-center justify-end gap-x-6">
       <button
+        *ngIf="false"
         type="button"
         class="text-sm font-semibold leading-6 text-gray-900"
       >
@@ -398,7 +404,7 @@
         type="submit"
         class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       >
-        Save
+        Salvar
       </button>
     </div>
   </form>

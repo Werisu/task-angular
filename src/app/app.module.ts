@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
@@ -17,7 +17,9 @@ import { AuthGuardService } from './authentication/guard/auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import * as firebase from "firebase/app";
 
+firebase.initializeApp(environment.firebaseConfig);
 
 @NgModule({
   declarations: [
