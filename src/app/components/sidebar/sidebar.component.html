@@ -17,11 +17,11 @@
       />
 
       <div class="flex flex-col items-start justify-center">
-        <b class="relative inline-block w-[150px]">{{userLogger.displayName ?? 'Usuário'}}</b>
+        <b class="relative inline-block w-[150px]">{{userLogger?.displayName ?? 'Usuário'}}</b>
         <div
           class="relative text-sm text-gray-shades-light-gray-3 inline-block w-[150px]"
         >
-          {{ userLogger.email }}
+          {{ userLogger?.email }}
         </div>
       </div>
     </div>

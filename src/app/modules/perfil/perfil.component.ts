@@ -43,38 +43,6 @@ export class PerfilComponent implements OnInit {
     })
   }
 
-  async upload(
-    event:any
-  ): Promise<string> {
-
-      const folder = 'users';
-      const name = event.target.files[0].name;
-      const file = event.target.files[0];
-
-      const ext = file!.name.split('.').pop();
-      const path = `${folder}/${name}`; {
-      let url = '';
-      let aux = '';
-
-      if (file) {
-        try {
-          const storageRef = ref(this.storage, path);
-          const task = uploadBytesResumable(storageRef, file);
-          let aux = storageRef.fullPath;
-          // this.uploadPercent = percentage(task);
-          await task;
-          url = await getDownloadURL(storageRef);
-        } catch(e: any) {
-          console.error(e);
-        }
-      } else {
-        // handle invalid file
-      }
-      this.urlImage = url;
-      return url;
-    }
-  }
-
   chooseFile(event: any){
     this.file = event.target.files[0];
     this.addData();

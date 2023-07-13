@@ -7,6 +7,7 @@ import {
   signInWithPopup,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -57,8 +58,20 @@ export class AuthService {
     sessionStorage.setItem('user', JSON.stringify(user));
   }
 
+  public getUser(): Observable<User>{
+    let subject = new Subject<User>();
+
+    this.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.user = user;
+        subject.next(user);
+      }
+    });
+
+    return subject.asObservable();
+  }
+
   get userLogged() {
-    let getSession = sessionStorage.getItem('user');
-    return getSession ? JSON.parse(getSession) : null;
+    return this.user;
   }
 }
