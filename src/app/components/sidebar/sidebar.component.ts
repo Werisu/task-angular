@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth, User } from '@angular/fire/auth';
+import { User } from '@angular/fire/auth';
 import { AuthService } from 'src/app/authentication/auth.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class SidebarComponent implements OnInit {
   public photoURL!: string;
   public isAtivo: boolean = true; // Defina o valor da variável com base na lógica do seu aplicativo
 
-  constructor(private authService: AuthService, private auth: Auth) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
     this.getUser();

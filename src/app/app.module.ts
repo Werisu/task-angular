@@ -10,14 +10,15 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
 import { AuthService } from './authentication/auth.service';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { getAuth, provideAuth } from "@angular/fire/auth";
+import { AngularFireModule, FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { provideAuth } from "@angular/fire/auth";
 import { environment } from 'src/environments/environment.development';
 import { AuthGuardService } from './authentication/guard/auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import * as firebase from "firebase/app";
+import { getAuth } from 'firebase/auth';
 
 firebase.initializeApp(environment.firebaseConfig);
 
@@ -31,6 +32,7 @@ firebase.initializeApp(environment.firebaseConfig);
     BrowserAnimationsModule,
     RouterModule,
     FormsModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),

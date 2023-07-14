@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
 import {
-  Auth,
   GoogleAuthProvider,
   User,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { Auth } from 'firebase/auth';
 import { Observable, Subject } from 'rxjs';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import { environment } from 'src/environments/environment.development';
+
+firebase.initializeApp(environment.firebaseConfig)
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user!: User;
+  user!: any;
   error: any;
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private auth: firebase.auth.Auth, private router: Router) {}
 
   async emailSignIn(email: string, password: string) {
     signInWithEmailAndPassword(this.auth, email, password)
@@ -59,7 +64,7 @@ export class AuthService {
   }
 
   public getUser(): Observable<User>{
-    let subject = new Subject<User>();
+    let subject = new Subject<any>();
 
     this.auth.onAuthStateChanged(user => {
       if (user) {
