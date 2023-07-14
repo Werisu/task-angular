@@ -101,9 +101,7 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "baseHref": "/task-angular/",
-            "name": "Wellysson Nascimento Rocha",
-            "email": "wellysson35@gmail.com"
+            "baseHref": "/task-angular/"
           }
         }
       }
