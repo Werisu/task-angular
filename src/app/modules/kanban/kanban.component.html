@@ -4,20 +4,30 @@
     <div class="px-10 mt-6">
       <h1 class="text-2xl font-bold">Quadro de Tarefas</h1>
     </div>
-    <div *ngIf="listGroup | async as listaGrupo" class="flex flex-grow px-10 mt-4 space-x-6 overflow-auto" [@fadeInOnEnter]>
+    <div
+      *ngIf="list | async as listaGrupo"
+      class="flex flex-grow px-10 mt-4 space-x-6 overflow-auto"
+      [@fadeInOnEnter]
+    >
       <div
         class="flex flex-col flex-shrink-0 w-72 bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200 rounded-lg p-3"
-        *ngFor="let taskItem of listaGrupo"
+        *ngFor="let taskItem of listaGrupo; let i = index"
+        (dragover)="onDragOver($event)"
+        (dragenter)="onDragEnter($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event, taskItem)"
+        [ngClass]="{ 'drag-over': isDraggingOver }"
+        #column
       >
         <div class="flex items-center flex-shrink-0 h-10 px-2">
-          <span class="block text-sm font-semibold">{{ taskItem[0] }}</span>
+          <span class="block text-sm font-semibold">{{ taskItem.group }}</span>
           <span
             class="flex items-center justify-center w-5 h-5 ml-2 text-sm font-semibold text-indigo-500 bg-white rounded bg-opacity-30"
             >6</span
           >
           <button
             class="flex items-center justify-center w-6 h-6 ml-auto text-indigo-500 rounded hover:bg-indigo-500 hover:text-indigo-100"
-            (click)="toggleModal(taskItem[0])"
+            (click)="toggleModal(taskItem)"
           >
             <svg
               class="w-5 h-5"
@@ -35,14 +45,17 @@
           </button>
         </div>
         <div class="flex flex-col pb-2 overflow-auto">
-          <div
+          <ng-container *ngFor="let item of taskItem.itens; let j = index">
+            <div
             class="relative flex flex-col items-start p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100"
             draggable="true"
-            *ngFor="let item of taskItem[1]"
+            *ngIf="!item.filed"
+            draggable="true"
+            (dragstart)="onDragStart($event, item)"
           >
             <button
               class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex"
-              (click)="deleteTask(item.key)"
+              (click)="deleteTask(taskItem, j)"
             >
               <svg
                 class="w-4 h-4 fill-current"
@@ -116,6 +129,7 @@
               />
             </div>
           </div>
+          </ng-container>
         </div>
       </div>
       <div class="flex-shrink-0 w-6"></div>
@@ -127,14 +141,14 @@
 <a
   role="button"
   class="fixed bottom-0 right-0 flex items-center justify-center h-8 pl-1 pr-2 mb-6 mr-4 text-blue-100 bg-blue-600 rounded-full shadow-lg hover:bg-blue-600"
-  (click)="toggleModal()"
+  (click)="toggleModalSession()"
 >
   <span class="ml-1 text-sm leading-none">Novo</span>
 </a>
 
 <!-- Modal Start -->
 <div
-  *ngIf="showModal"
+  *ngIf="showModal && taskModal"
   class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
 >
   <div class="relative w-auto my-6 mx-auto max-w-6xl">
@@ -237,4 +251,71 @@
     </div>
   </div>
 </div>
+
+<div
+  *ngIf="showModal && sessionModal"
+  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+>
+  <div class="relative w-auto my-6 mx-auto max-w-6xl">
+    <!--content-->
+    <div
+      class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+    >
+      <!--header-->
+      <div
+        class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
+      >
+        <h3 class="text-3xl font-semibold">Nova Lista</h3>
+        <button
+          class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+          (click)="toggleModal()"
+        >
+          <span
+            class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
+          >
+            ×
+          </span>
+        </button>
+      </div>
+      <!--body-->
+      <div class="relative p-6 flex-auto">
+        <form [formGroup]="newTaskForm" (onSubmit)="onSubmit()">
+          <div class="mb-6">
+            <select
+              class="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              formControlName="status"
+              name="status"
+              required
+              (click)="listCategories()"
+            >
+              <option *ngFor="let category of categories" [value]="category">
+                {{ category }}
+              </option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <!--footer-->
+      <div
+        class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
+      >
+        <button
+          class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          type="button"
+          (click)="toggleModal()"
+        >
+          Fechar
+        </button>
+        <button
+          class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+          type="button"
+          (click)="addList(); toggleModalSession()"
+        >
+          Adicionar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="showModal" class="opacity-25 fixed inset-0 z-40 bg-black"></div>

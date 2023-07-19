@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, SnapshotAction } from '@angular/fire/compat/database';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AngularFireDatabase, AngularFireList, SnapshotAction } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, Subject, from, groupBy, map, mergeMap, of, toArray, zip } from 'rxjs';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { AuthService } from '../../authentication/auth.service';
 import { User } from '@angular/fire/auth';
+import { Task, Tasks } from 'src/app/models/task';
 
 @Component({
   selector: 'app-kanban',
@@ -15,16 +16,23 @@ import { User } from '@angular/fire/auth';
   ]
 })
 export class KanbanComponent implements OnInit {
+  @ViewChild('column') column!: ElementRef;
   showModal = false;
   listTags: string[] = [];
   newTaskForm!: FormGroup;
 
-  listRef: any;
+  listRef: AngularFireList<Task>;
   list!: Observable<any[]>;
   categories: string[] = [];
   listGroup!: Observable<any[]>;
 
-  constructor(private formBuilder: FormBuilder, private database: AngularFireDatabase, private authService: AuthService) {
+  isDraggingOver = false;
+  eventoSelecionado: any;
+  item: any;
+  sessionModal: boolean = false;
+  taskModal: boolean = false;
+
+  constructor(private formBuilder: FormBuilder, private database: AngularFireDatabase, private authService: AuthService, private db: AngularFireDatabase) {
     this.listRef = database.list('tasks');
    this.list = this.listRef
       .snapshotChanges()
@@ -67,9 +75,16 @@ export class KanbanComponent implements OnInit {
     return subject.asObservable();
   }
 
-  toggleModal(status?: string){
+  toggleModal(item?: any){
+    this.item = item;
     this.showModal = !this.showModal;
-    this.newTaskForm.get('status')?.setValue(status);
+    this.taskModal = !this.taskModal;
+    this.newTaskForm.get('status')?.setValue(item?.group);
+  }
+
+  toggleModalSession(){
+    this.showModal = !this.showModal;
+    this.sessionModal = !this.sessionModal;
   }
 
   addTag(){
@@ -78,18 +93,44 @@ export class KanbanComponent implements OnInit {
   }
 
   addTask(){
-    this.listRef.push({
-      description: this.newTaskForm.value.description,
-      tags: this.listTags,
-      status: this.newTaskForm.value.status,
-      author: this.authService.userLogged
-    });
+    if(this.item?.itens){
+      this.listRef.update(this.item.key, {
+        group: this.item.group,
+        itens: [
+          ...this.item.itens,
+          {
+          description: this.newTaskForm.value.description,
+          tags: this.listTags
+          }
+      ]
+      });
+    }else{
+      this.listRef.update(this.item.key, {
+        group: this.item.group,
+        itens: [
+          {
+            description: this.newTaskForm.value.description,
+            tags: this.listTags,
+            filed: false
+          }
+        ]
+      });
+    }
+
+
     this.newTaskForm.get('description')?.reset();
-    this.listTags = ['fazer'];
+    this.listTags = [];
   }
 
-  deleteTask(key: string){
-    this.listRef.remove(key);
+  addList(){
+    this.listRef.push({
+      group: this.newTaskForm.value.status
+    });
+  }
+
+  deleteTask(list: Task, index: number){
+    list.itens![index].filed = true;
+    this.listRef.update(list.key!, list);
   }
 
   removeTag(tag: string){
@@ -103,11 +144,74 @@ export class KanbanComponent implements OnInit {
   listCategories(){
     this.categories = ['fazer', 'fazendo', 'feito'];
   }
-}
 
-export interface Task {
-  description: string;
-  tags: string[];
-  status: string;
-  author: User;
+  /**
+   * É quando arrasta
+   * @param event o evento
+   * @param item o item
+   *
+   * item:
+   * {
+   * "key": "-N_9QHSnvXXhp1U2gv61",
+   * "description": "Lavar o carro",
+   * "status": "fazer",
+   * "tags": [
+   *    "Casa"
+   * ]
+   * }
+   */
+  onDragStart(event: any, item: any) {
+    // Define os dados sendo arrastados (no nosso caso, o item)
+    event.dataTransfer.setData('text/plain', JSON.stringify(item));
+    event.target.classList.add('dragging');
+    this.eventoSelecionado = event;
+  }
+
+  /**
+   * a localização na tela onde o item está sendo arrastado.
+   * @param event o evento
+   *
+   * exemplo: clientX: 788, clientY: 323, entre outros
+   */
+  onDragOver(event: any) {
+    // Permite a soltura na área de destino
+    event.preventDefault();
+  }
+
+  onDragEnter(event: any) {
+    // Adicione estilos ou realce visual para indicar a área de destino
+    this.isDraggingOver = true;
+  }
+
+  onDragLeave(event: any) {
+    // Remova os estilos ou realce visual quando o elemento sair da área de destino
+    this.isDraggingOver = false;
+  }
+
+  onDrop(event: any, newStatus: string) {
+    // Impede o comportamento padrão do navegador
+    event.preventDefault();
+
+    // Obtém os dados arrastados (o item)
+    const data = event.dataTransfer.getData('text/plain');
+    const item = JSON.parse(data);
+
+    // Atualiza o status do item para o novo status da coluna
+    item.status = newStatus;
+
+    // Realiza qualquer lógica adicional necessária, como atualizar o banco de dados
+
+    // Limpa os estilos ou realce visual
+    console.log(newStatus);
+    this.eventoSelecionado.target.classList.remove('dragging');
+
+    // this.listRef.update(item.key, {
+    //   status: newStatus
+    // });
+  }
+
+  //R$ 331,02
+  //R$ 555,04
+
+
 }

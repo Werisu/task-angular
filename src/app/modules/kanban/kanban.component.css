@@ -1,0 +1,32 @@
+.drag-over {
+  border: 2px dashed blue; /* Adicione um contorno pontilhado azul */
+  background-color: lightblue; /* Mude a cor de fundo para indicar a área de destino */
+}
+
+.kanban{
+  display:flex;
+  justify-content: center;
+  min-height: 400px;
+  gap: 10px;
+  padding: 10px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: cadetblue;
+  min-width: 200px;
+  border-radius: 5px;
+}
+
+.item {
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.dragging {
+  opacity: 0.5;
+}
