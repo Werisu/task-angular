@@ -17,9 +17,9 @@ import { AuthGuardService } from './authentication/guard/auth-guard.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
-import * as firebase from "firebase/app";
+import { AngularFireModule } from "@angular/fire/compat";
 
-firebase.initializeApp(environment.firebaseConfig);
+AngularFireModule.initializeApp(environment.firebaseConfig);
 
 @NgModule({
   declarations: [

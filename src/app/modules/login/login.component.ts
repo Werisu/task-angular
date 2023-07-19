@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
 
   formNewName = '';
   formNewAge = '';
+  passwordView = false;
 
   listRef: any;
   list!: Observable<any[]>;
