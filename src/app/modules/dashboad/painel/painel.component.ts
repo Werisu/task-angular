@@ -25,13 +25,11 @@ export class PainelComponent implements OnInit {
   getCollectionTask(){
     this.db.list('tasks').valueChanges().subscribe((data: any) => {
       this.tasks = data;
+      console.log(this.tasks);
+
       this.tasks.forEach((item) => {
-        if(item.group == 'fazer' && item.itens){
-          item.itens.forEach((item2) => {
-            if(item2.filed == false){
-              this.NumberOfTasks++;
-            }
-          });
+        if(item.group == 'fazer'){
+          this.NumberOfTasks = item.itens?.length ?? 0;
         }
       });
     });
