@@ -13,7 +13,7 @@
       <img
         class="relative rounded-2xl w-14 h-14 object-cover"
         alt=""
-        [src]="photoURL == null ? 'assets/images/avatar.png' : photoURL"
+        [src]="userLogger?.photoURL == null ? 'assets/images/avatar.png' : userLogger?.photoURL"
       />
 
       <div class="flex flex-col items-start justify-center">

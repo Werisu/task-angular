@@ -3,11 +3,15 @@ import {
   Auth,
   GoogleAuthProvider,
   User,
+  UserCredential,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateCurrentUser,
+  updatePhoneNumber,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
+import firebase from 'firebase/compat/app';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +19,7 @@ import { Observable, Subject } from 'rxjs';
 export class AuthService {
   user!: User;
   error: any;
+  credential!: UserCredential;
 
   constructor(private auth: Auth, private router: Router) {}
 
@@ -24,6 +29,7 @@ export class AuthService {
         this.user = userCredential.user;
         this.gravarUsuario(this.user);
         this.router.navigate(['/todoapp']);
+        this.credential = userCredential;
       })
       .catch((error) => {
         this.error = error;
@@ -59,6 +65,8 @@ export class AuthService {
   }
 
   public getUser(): Observable<User>{
+    console.log('busca');
+
     let subject = new Subject<User>();
 
     this.auth.onAuthStateChanged(user => {
@@ -73,5 +81,12 @@ export class AuthService {
 
   get userLogged() {
     return this.user;
+  }
+
+  updatePhoneNumber(phoneNumber: any) {
+    updateCurrentUser(this.auth, {
+      ...this.user,
+      phoneNumber: phoneNumber,
+    })
   }
 }
