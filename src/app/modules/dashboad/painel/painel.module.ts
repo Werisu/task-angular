@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PainelComponent } from './painel.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -9,7 +10,11 @@ import { PainelComponent } from './painel.component';
     PainelComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
+  ],
+  exports: [
+    PainelComponent
   ]
 })
 export class PainelModule { }

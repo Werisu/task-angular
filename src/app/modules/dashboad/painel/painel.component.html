@@ -1,5 +1,21 @@
 <div>
-  <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-     Dashboard
+  <div class="p-4 rounded-lg">
+    <div class="w-full bg-white shadow-md rounded p-6">
+      <h1 class="text-3xl font-bold mb-4">Bem-vindo ao Task Angular!</h1>
+      <p class="text-gray-600">Olá, <span class="font-bold">{{ getUser() }}</span>!</p>
+      <p class="text-gray-600">Seja bem-vindo(a) ao nosso painel do Task Angular. Aqui você pode encontrar informações importantes, visualizar dados e realizar diversas ações.</p>
+    </div>
+
+    <div class="max-w-sm w-full sm:w-96 bg-white shadow-md rounded p-6 mt-4">
+      <h1 class="text-3xl font-bold mb-4">Tarefas a Fazer</h1>
+      <div class="bg-blue-500 text-white font-bold rounded p-4 mb-4">
+        <p class="text-2xl">{{ NumberOfTasks }}</p>
+        <p>Tarefas Pendentes</p>
+      </div>
+      <p class="text-gray-600">Você possui {{ NumberOfTasks }} tarefas a fazer. Organize-se e torne seu dia mais <span class="text-green-600">produtivo!</span></p>
+      <button [routerLink]="['/todoapp/kanban']" routerLinkActive="active"  class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+        Ver Tarefas
+      </button>
+    </div>
   </div>
 </div>

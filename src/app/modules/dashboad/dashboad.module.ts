@@ -6,6 +6,7 @@ import { DashboadComponent } from './dashboad.component';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { FooterComponent } from 'src/app/components/footer/footer.component';
 import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
+import { PainelModule } from './painel/painel.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SidebarComponent } from 'src/app/components/sidebar/sidebar.component';
   ],
   imports: [
     CommonModule,
-    DashboadRoutingModule
+    DashboadRoutingModule,
+    PainelModule
   ]
 })
 export class DashboadModule { }
