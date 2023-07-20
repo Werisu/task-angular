@@ -1,11 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, SnapshotAction } from '@angular/fire/compat/database';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable, Subject, from, groupBy, map, mergeMap, of, toArray, zip } from 'rxjs';
+import { Observable, Subject, firstValueFrom, from, groupBy, map, mergeMap, of, toArray, zip } from 'rxjs';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { AuthService } from '../../authentication/auth.service';
 import { User } from '@angular/fire/auth';
 import { Task, Tasks } from 'src/app/models/task';
+import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import { or } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-kanban',
@@ -31,8 +35,9 @@ export class KanbanComponent implements OnInit {
   item: any;
   sessionModal: boolean = false;
   taskModal: boolean = false;
+  keyOriginOnDragStart!: Task;
 
-  constructor(private formBuilder: FormBuilder, private database: AngularFireDatabase, private authService: AuthService, private db: AngularFireDatabase) {
+  constructor(private formBuilder: FormBuilder, private database: AngularFireDatabase, private authService: AuthService, private db: AngularFireDatabase, private firestore: AngularFirestore) {
     this.listRef = database.list('tasks');
    this.list = this.listRef
       .snapshotChanges()
@@ -68,7 +73,6 @@ export class KanbanComponent implements OnInit {
       .subscribe((x) => {
         objetos.push(x);
       });
-      console.log(objetos);
 
       subject.next(objetos);
     });
@@ -160,11 +164,12 @@ export class KanbanComponent implements OnInit {
    * ]
    * }
    */
-  onDragStart(event: any, item: any) {
+  onDragStart(event: any, item: any, origin: Task) {
     // Define os dados sendo arrastados (no nosso caso, o item)
     event.dataTransfer.setData('text/plain', JSON.stringify(item));
     event.target.classList.add('dragging');
     this.eventoSelecionado = event;
+    this.keyOriginOnDragStart = origin;
   }
 
   /**
@@ -188,7 +193,7 @@ export class KanbanComponent implements OnInit {
     this.isDraggingOver = false;
   }
 
-  onDrop(event: any, newStatus: string) {
+  onDrop(event: any, newStatus: any, dataTask: any) {
     // Impede o comportamento padrão do navegador
     event.preventDefault();
 
@@ -202,16 +207,51 @@ export class KanbanComponent implements OnInit {
     // Realiza qualquer lógica adicional necessária, como atualizar o banco de dados
 
     // Limpa os estilos ou realce visual
-    console.log(newStatus);
     this.eventoSelecionado.target.classList.remove('dragging');
 
-    // this.listRef.update(item.key, {
-    //   status: newStatus
-    // });
+
+    this.moveItem(newStatus, dataTask);
   }
 
-  //R$ 331,02
-  //R$ 555,04
+  moveItem(destino: Task, dataTask: any) {
+    const data = dataTask;
 
+    // Obter os itens de ambos os objetos
+    const sourceGroup = data.find((item:any) => item.key === this.keyOriginOnDragStart.key!);
+    const destinationGroup = data.find((item:any) => item.key === destino.key!);
 
+    // Obter o primeiro item do objeto "-N_nYB4RNsNgNeJdl741"
+    const items = sourceGroup?.itens || [];
+    const firstItem = items[0];
+
+    if (firstItem) {
+      // Adicionar o primeiro item ao objeto "-N_nhXMvRVVOFiG_-phH"
+      destinationGroup["itens"] = destinationGroup["itens"] || [];
+      destinationGroup["itens"].push(firstItem);
+
+      // Remover o primeiro item do objeto "-N_nYB4RNsNgNeJdl741"
+      items.splice(0, 1);
+
+      // Atualizar os documentos no Firestore
+
+      this.listRef.update(sourceGroup.key!, sourceGroup);
+      this.listRef.update(destinationGroup.key!, destinationGroup);
+    }
+
+  }
+
+  // usando o "@angular/fire": "^7.6.1", como mover um item de uma coleção para outra coleção no Realtime Database?
+
+}
+
+interface Tarefa {
+  key: string;
+  group: string;
+  itens: { description: string; filed?: boolean; tags?: string[] }[];
+}
+
+interface ItemOrigem {
+  key: string;
+  group: string;
+  itens: any[]; // Defina o tipo dos itens de acordo com sua estrutura real
 }

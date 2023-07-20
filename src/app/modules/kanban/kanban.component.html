@@ -15,7 +15,7 @@
         (dragover)="onDragOver($event)"
         (dragenter)="onDragEnter($event)"
         (dragleave)="onDragLeave($event)"
-        (drop)="onDrop($event, taskItem)"
+        (drop)="onDrop($event, taskItem, listaGrupo)"
         [ngClass]="{ 'drag-over': isDraggingOver }"
         #column
       >
@@ -51,7 +51,7 @@
             draggable="true"
             *ngIf="!item.filed"
             draggable="true"
-            (dragstart)="onDragStart($event, item)"
+            (dragstart)="onDragStart($event, item, taskItem)"
           >
             <button
               class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex"

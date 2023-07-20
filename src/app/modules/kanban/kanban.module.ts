@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { KanbanRoutingModule } from './kanban-routing.module';
 import { KanbanComponent } from './kanban.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 
 
 @NgModule({
@@ -13,7 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     KanbanRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFirestoreModule
   ]
 })
 export class KanbanModule { }
