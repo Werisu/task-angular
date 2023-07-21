@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2  } from '@angular/core';
 import { Auth, User } from '@angular/fire/auth';
 import { AuthService } from 'src/app/authentication/auth.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -15,10 +15,14 @@ export class SidebarComponent implements OnInit {
   public showNav: boolean = false;
   public isMobile: boolean = false;
 
-  constructor(private authService: AuthService, private auth: Auth, private bpo: BreakpointObserver) { }
+  constructor(private authService: AuthService, private auth: Auth, private bpo: BreakpointObserver, private renderer: Renderer2) { }
 
   ngOnInit(): void {
     this.getUser();
+  }
+
+  darkMode(){
+    this.renderer.addClass(document.body, 'dark');
   }
 
   getBreakpoint() {

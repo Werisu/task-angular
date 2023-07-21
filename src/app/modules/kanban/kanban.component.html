@@ -209,6 +209,7 @@
               name="tags"
               formControlName="tags"
               (keyup.Enter)="addTag()"
+              (blur)="addTag()"
               type="text"
               id="tags"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -234,7 +235,7 @@
           class="bg-emerald-500 disabled:bg-gray-400 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
           type="button"
           (click)="addTask(); toggleModal()"
-          [disabled]="newTaskForm.invalid && this.listTags.length === 0"
+          [disabled]="newTaskForm.get('description')?.invalid || this.listTags.length === 0"
         >
           Adicionar Tarefa
         </button>

@@ -29,7 +29,11 @@ export class PainelComponent implements OnInit {
 
       this.tasks.forEach((item) => {
         if(item.group == 'fazer'){
-          this.NumberOfTasks = item.itens?.length ?? 0;
+          item.itens!.forEach((item2) => {
+            if (item2.filed == false) {
+              this.NumberOfTasks++;
+            }
+          });
         }
       });
     });

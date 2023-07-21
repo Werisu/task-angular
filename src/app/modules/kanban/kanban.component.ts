@@ -105,7 +105,8 @@ export class KanbanComponent implements OnInit {
           ...this.item.itens,
           {
           description: this.newTaskForm.value.description,
-          tags: this.listTags
+          tags: this.listTags,
+          filed: false
           }
       ]
       });
