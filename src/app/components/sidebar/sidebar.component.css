@@ -24,3 +24,15 @@
   border-top-right-radius: 25px;
   box-shadow: 0 -25px 0 0 #FFF;
 }
+
+/* Adicione esses estilos no seu arquivo CSS */
+#drawer-navigation {
+  /* Seus estilos existentes aqui */
+  /* Adicione as propriedades de transição para criar uma animação suave ao abrir/fechar a barra lateral */
+  transition: transform 0.3s ease;
+}
+
+/* Estilo para mostrar a barra lateral */
+#drawer-navigation.open {
+  transform: translateX(0);
+}
