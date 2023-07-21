@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, SnapshotAction } from '@angular/fire/compat/database';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject, firstValueFrom, from, groupBy, map, mergeMap, of, toArray, zip } from 'rxjs';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { AuthService } from '../../authentication/auth.service';
@@ -10,6 +10,7 @@ import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { or } from '@angular/fire/firestore';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-kanban',
@@ -51,7 +52,7 @@ export class KanbanComponent implements OnInit {
   ngOnInit(): void {
     this.listCategories();
     this.newTaskForm = this.formBuilder.group({
-      description: [''],
+      description: ['', Validators.required],
       tags: [''],
       status: ['']
     });
@@ -133,8 +134,19 @@ export class KanbanComponent implements OnInit {
   }
 
   deleteTask(list: Task, index: number){
-    list.itens![index].filed = true;
-    this.listRef.update(list.key!, list);
+    Swal.fire({
+      title: 'Deseja arquivar essa tarefa?',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, arquivar!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        list.itens![index].filed = true;
+        this.listRef.update(list.key!, list);
+        Swal.fire('Arquivado!', '', 'success')
+      }
+    });
   }
 
   removeTag(tag: string){
